@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body">
+                <form>
+                    <div class="row">
+                        <div class="col-12">
+                            <h5 class="form-title"><span>Profile Update</span></h5>
+                        </div>
+                        <div class="col-12 col-sm-4">
+                            <div class="form-group local-forms">
+                                <label>Profile Pic <span class="login-danger">*</span></label>
+                                <input type="file" class="form-control" name="profile_pic"/>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-4">
+                            <div class="form-group local-forms">
+                                <label>First Name <span class="login-danger">*</span></label>
+                                <input type="text" class="form-control" name="first_name"/>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-4">
+                            <div class="form-group local-forms">
+                                <label>Last Name <span class="login-danger">*</span></label>
+                                <input type="text" class="form-control" name="last_name"/>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-4">
+                            <div class="form-group local-forms">
+                                <label>Email <span class="login-danger">*</span></label>
+                                <input type="text" class="form-control" name="email" readonly/>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-4">
+                            <div class="form-group local-forms">
+                                <label>Username<span class="login-danger">*</span></label>
+                                <input type="text" class="form-control" name="username" readonly/>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-4">
+                            <div class="form-group local-forms">
+                                <label>Password <span class="login-danger">*</span></label>
+                                <input type="text" class="form-control" name="password" placeholder="Fill if you want to change password" />
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="student-submit">
+                                <button type="submit" class="btn btn-primary">Update Profile</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+{% endblock %}
