@@ -132,3 +132,51 @@ def DELETE_STUDENT(request,admin):
      student.delete()
      messages.success(request,'Student Deleted Sucessfull !!')
      return redirect('view_student')
+
+def ADD_COURSE(request):
+    if request.method == "POST":
+        course_name = request.POST.get('course_name')
+     
+        course = Course(
+            name = course_name,
+        )
+        course.save()
+        messages.success(request,'Course Add Successfull !!')
+        return redirect('add_course')
+    
+    return render(request,'Hod/add_course.html')
+
+def VIEW_COURSE(request):
+    
+    course = Course.objects.all()
+    context = {
+         'course' : course
+    }
+    return render(request,'Hod/view_course.html',context)
+
+def EDIT_COURSE(request,id):
+    course = Course.objects.get(id = id)
+    context = {
+         'course' : course
+    }
+    return render(request,'Hod/edit_course.html',context)
+
+def UPDATE_COURSE(request):
+     if request.method == "POST":
+        name = request.POST.get("course_name")
+        course_id = request.POST.get("course_id")
+
+        course = Course.objects.get(id = course_id)
+        course.name = name
+        course.save()
+
+        messages.success(request,'Course Updated Successfull !!')
+        return redirect('view_course')
+          
+     return render(request,'Hod/edit_course.html')
+
+def DELETE_COURSE(request,id):
+    course = Course.objects.get(id = id)
+    course.delete()
+    messages.success(request,"Course Deleted Successfull !!")
+    return redirect('view_course')

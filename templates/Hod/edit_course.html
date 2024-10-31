@@ -6,12 +6,12 @@
     <div class="col-sm-12">
         <div class="card comman-shadow">
             <div class="card-body">
-                <form method="post" action="{% url 'add_course' %}">
+                <form method="post" action="{% url 'update_course' %}">
                     {% csrf_token %}
                     <div class="row">
                         <div class="col-12">
                             <h5 class="form-title student-info">
-                                Add Course
+                                Edit Course
                                 <span>
                                     <a href="javascript:;"><i class="feather-more-vertical"></i></a>
                                 </span>
@@ -21,14 +21,15 @@
                         <div class="col-12 col-sm-4">
                             <div class="form-group local-forms">
                                 <label>Course Name <span class="login-danger">*</span></label>
-                                <input class="form-control" type="text" placeholder="Enter Course Name" name="course_name" required/>
+                                <input class="form-control" type="text" placeholder="Enter Course Name" name="course_name" value = "{{course.name}}" required/>
+                                <input class="form-control" type="text" name="course_id" value="{{course.id}}" hidden />
                             </div>
                         </div>
 
 
                         <div class="col-12">
                             <div class="student-submit">
-                                <button type="submit" class="btn btn-primary">Add Course</button>
+                                <button type="submit" class="btn btn-primary">Edit Course</button>
                             </div>
                         </div>
                         
