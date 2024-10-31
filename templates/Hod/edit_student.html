@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card comman-shadow">
+            <div class="card-body">
+                <form method="post" action="{% url 'update_student' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-12">
+                            <h5 class="form-title student-info">
+                                Update Student
+                                <span>
+                                    <a href="javascript:;"><i class="feather-more-vertical"></i></a>
+                                </span>
+                            </h5>
+                        </div>
+                        {% include "includes/messages.html" %}
+                        <div class="col-12 col-sm-4">
+                            <div class="form-group local-forms">
+                                <label>First Name <span class="login-danger">*</span></label>
+                                <input class="form-control" type="text" placeholder="Enter First Name" name="first_name"/>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-4">
+                            <div class="form-group local-forms">
+                                <label>Last Name <span class="login-danger">*</span></label>
+                                <input class="form-control" type="text" placeholder="Enter First Name" name="last_name"/>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-4">
+                            <div class="form-group local-forms">
+                                <label>Gender <span class="login-danger">*</span></label>
+                                <select class="form-control select" name="gender">
+                                    <option>Select Gender</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Others">Others</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-4">
+                            <div class="form-group local-forms">
+                                <label>Course <span class="login-danger">*</span></label>
+                                <select class="form-control select" name="course_id">
+                                    <option>Please Course </option>
+                                    {% for i in course  %}
+                                    <option value="{{i.id}}">{{i.name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-4">
+                            <div class="form-group local-forms">
+                                <label>Session Year <span class="login-danger">*</span></label>
+                                <select class="form-control select" name="session_year_id">
+                                    <option>Please Session Year </option>
+                                    {% for i in session_year %}
+                                    <option value="{{i.id}}">{{i.session_start}} To {{i.session_end}}</option>
+                                    {% endfor %}
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-4">
+                            <div class="form-group local-forms">
+                                <label>E-Mail <span class="login-danger">*</span></label>
+                                <input class="form-control" type="text" placeholder="Enter Email Address" name="email"/>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-4">
+                            <div class="form-group local-forms">
+                                <label>Password <span class="login-danger">*</span></label>
+                                <input type="text" class="form-control" name="password" placeholder="Enter Password"/>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-4">
+                            <div class="form-group local-forms">
+                                <label>Username<span class="login-danger">*</span></label>
+                                <input type="text" class="form-control" name="username" placeholder="Enter Username"/>
+                            </div>
+                        </div>
+                            <div class="col-12">
+                            <div class="form-group local-forms">
+                            <label>Address <span class="login-danger">*</span></label>
+                            <input type="text" class="form-control" placeholder="Enter address" name="address">
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-4">
+                            <div class="form-group students-up-files">
+                                <label>Upload Student Photo (150px X 150px)</label>
+                                <div class="uplod">
+                                    <label class="file-upload image-upbtn mb-0"> Choose File <input type="file" name="profile_pic"/>  </label>
+                                    <input type="text" name="student_id" value="{% for i in student %}{{i.admin.id}}{% endfor %}" hidden/>
+                                </div>
+                            </div>
+                        </div>
+                      
+                        <div class="col-12">
+                            <div class="student-submit">
+                                <button type="submit" class="btn btn-primary">Update</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}

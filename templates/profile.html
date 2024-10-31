@@ -5,11 +5,33 @@
     <div class="col-sm-12">
         <div class="card">
             <div class="card-body">
-                <form>
+                <form method="post" action="{% url 'profile_update' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
                     <div class="row">
                         <div class="col-12">
                             <h5 class="form-title"><span>Profile Update</span></h5>
                         </div>
+                        {% if messages %}
+                        {% for message in messages %}
+                        {% if message.tags == 'error' %}
+                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                {{message}}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
+
+                        {% if messages %}
+                        {% for message in messages %}
+                        {% if message.tags == 'success' %}
+                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                {{message}}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
                         <div class="col-12 col-sm-4">
                             <div class="form-group local-forms">
                                 <label>Profile Pic <span class="login-danger">*</span></label>
@@ -19,25 +41,25 @@
                         <div class="col-12 col-sm-4">
                             <div class="form-group local-forms">
                                 <label>First Name <span class="login-danger">*</span></label>
-                                <input type="text" class="form-control" name="first_name"/>
+                                <input type="text" class="form-control" name="first_name" value="{{user.first_name}}"/>
                             </div>
                         </div>
                         <div class="col-12 col-sm-4">
                             <div class="form-group local-forms">
                                 <label>Last Name <span class="login-danger">*</span></label>
-                                <input type="text" class="form-control" name="last_name"/>
+                                <input type="text" class="form-control" name="last_name" value="{{user.last_name}}"/>
                             </div>
                         </div>
                         <div class="col-12 col-sm-4">
                             <div class="form-group local-forms">
                                 <label>Email <span class="login-danger">*</span></label>
-                                <input type="text" class="form-control" name="email" readonly/>
+                                <input type="text" class="form-control" name="email" readonly value="{{user.email}}"/>
                             </div>
                         </div>
                         <div class="col-12 col-sm-4">
                             <div class="form-group local-forms">
                                 <label>Username<span class="login-danger">*</span></label>
-                                <input type="text" class="form-control" name="username" readonly/>
+                                <input type="text" class="form-control" name="username" readonly value="{{user.username}}"/>
                             </div>
                         </div>
                         <div class="col-12 col-sm-4">
