@@ -47,8 +47,11 @@ urlpatterns = [
     path('Hod/Staff/Delete/<str:admin>',Hod_Views.DELETE_STAFF,name="delete_staff"),
     path('Hod/Staff/Update',Hod_Views.UPDATE_STAFF,name="update_staff"),
 
-    
-
+    path('Hod/Subject/Add',Hod_Views.ADD_SUBJECT,name="add_subject"),
+    path('Hod/Subject/View',Hod_Views.VIEW_SUBJECT,name="view_subject"),
+    path('Hod/Subject/Edit/<str:id>',Hod_Views.EDIT_SUBJECT,name="edit_subject"),
+    path('Hod/Subject/Update',Hod_Views.UPDATE_SUBJECT,name="update_subject"),
+    path('Hod/Course/Delete/<str:id>',Hod_Views.DELETE_SUBJECT,name="delete_subject"),
 
     path('Hod/Course/Add',Hod_Views.ADD_COURSE,name='add_course'),
     path('Hod/Course/View',Hod_Views.VIEW_COURSE,name='view_course'),

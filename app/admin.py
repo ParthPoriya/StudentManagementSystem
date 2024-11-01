@@ -13,5 +13,6 @@ admin.site.register(Course)
 admin.site.register(Session_Year)
 admin.site.register(Student)
 admin.site.register(Staff)
+admin.site.register(Subject)
 
 # Register your models here.
