@@ -14,5 +14,8 @@ admin.site.register(Session_Year)
 admin.site.register(Student)
 admin.site.register(Staff)
 admin.site.register(Subject)
+admin.site.register(Staff_Notification)
+admin.site.register(Staff_leave)
+admin.site.register(Staff_Feedback)
 
 # Register your models here.

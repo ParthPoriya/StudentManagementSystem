@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="page-header">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="page-sub-header">
+                <h3 class="page-title">Students</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="students.html">Student</a></li>
+                    <li class="breadcrumb-item active">All Students</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-auto text-end float-end ms-auto download-grp">
+            
+            <button href="#" class="btn btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop" type="button"><i class="fas fa-pray" ></i> Leave Apply Histroy</button>
+            
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card comman-shadow">
+            <div class="card-body">
+                <form method="post" action="{% url 'staff_apply_leave_save' %}">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-12">
+                            <h5 class="form-title student-info">
+                                Apply for Leave
+                                <span>
+                                    <a href="javascript:;"><i class="feather-more-vertical"></i></a>
+                                </span>
+                            </h5>
+                        </div>
+                        {% include "includes/messages.html" %}
+                        <div class="col-12 col-sm-4">
+                            <div class="form-group local-forms">
+                                <label>Leave Date <span class="login-danger">*</span></label>
+                                <input class="form-control" type="date" placeholder="Enter Date" name="leave_date" required/>
+                            </div>
+                        </div>
+
+                        </div>
+                            <div class="col-12">
+                            <div class="form-group local-forms">
+                            <label>Leave Message <span class="login-danger">*</span></label>
+                            <textarea type="text" class="form-control" placeholder="Enter Message" name="leave_message" required></textarea>
+                            </div>
+                        </div>
+
+
+                        <div class="col-12">
+                            <div class="student-submit">
+                                <button type="submit" class="btn btn-primary">Apply for leave</button>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+  
+  <!-- Modal -->
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Leave Apply Histroy</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card card-table comman-shadow">
+                    <div class="card-body">
+                        <div class="page-header">
+                            <div class="row align-items-center">
+                                <div class="col">
+                                    <h3 class="page-title">Students</h3>
+                                </div>
+                                
+                            </div>
+                        </div>
+    
+                        <div class="table-responsive">
+                            <table id="table_id" class="table border-0 star-student table-hover table-center mb-0 table-striped">
+                                <thead class="student-thread">
+                                    <tr>
+                                    
+                                        <th>Date</th>
+                                        <th>Message</th>
+                                        <th>Status</th>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for i in staff_leave_histroy %}
+                                    <tr>
+                                        
+                                        <td>{{i.data}}</td>
+                                        
+                                        <td>{{i.message}}</td>
+                                        
+                                    
+                                        <td class="text-end">
+                                            <div class="actions">
+                                                {% if i.status == 0  %}
+                                                <span class="badge badge-info">Request are Pending</span>
+                                                {% elif i.status == 1 %}
+                                                <span class="badge badge-success">Accepted</span>
+                                                {% else %}
+                                                <span class="badge badge-danger">Rejected</span>
+                                                {% endif %}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+
+{% endblock content %}
+
+
+
+

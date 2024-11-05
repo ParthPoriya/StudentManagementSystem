@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <div class="content container-fluid">
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title">Edit Session</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="subjects.html">Session</a></li>
+                        <li class="breadcrumb-item active">Edit Session</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {% include "includes/messages.html" %}
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <form action="{% url 'update_session' %}" method="post">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-12">
+                                    <h5 class="form-title"><span>Session Information</span></h5>
+                                </div>
+                                <div class="col-12 col-sm-4">
+                                    <div class="form-group local-forms calendar-icon">
+                                        <label>Session Year Start <span class="login-danger">*</span></label>
+                                        <input class="form-control datetimepicker" type="text" placeholder="DD-MM-YYYY" name="session_year_start" value="{% for i in session%} {{i.session_start}} {%endfor%}" required/>
+                                        <input type="text" name="session_id" value="{% for i in session%} {{i.id}} {%endfor%}" hidden/>
+                                    </div>
+                                </div>
+                               
+                                <div class="col-12 col-sm-4">
+                                    <div class="form-group local-forms calendar-icon">
+                                        <label>Session Year End <span class="login-danger">*</span></label>
+                                        <input class="form-control datetimepicker" type="text" placeholder="DD-MM-YYYY" name="session_year_end" value="{% for i in session%} {{i.session_end}} {%endfor%}" required/>
+                                    </div>
+                                </div>
+                               
+                                <div class="col-12">
+                                    <div class="student-submit">
+                                        <button type="submit" class="btn btn-primary">Edit Session</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+{% endblock %}
+
+
+

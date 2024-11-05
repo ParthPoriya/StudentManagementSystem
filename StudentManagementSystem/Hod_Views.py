@@ -1,11 +1,27 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
-from app.models import Course,Session_Year,CustomUser,Student,Staff,Subject
+from app.models import Course,Session_Year,CustomUser,Student,Staff,Subject,Session_Year,Staff_Notification,Staff_leave,Staff_Feedback
 from django.contrib import messages
 
 @login_required(login_url='/')
 def HOME(request):
-    return render(request,'hod/home.html')
+    student_count = Student.objects.all().count()
+    staff_count = Staff.objects.all().count()
+    course_count = Course.objects.all().count()
+    subject_count = Subject.objects.all().count()
+
+    student_gender_male = Student.objects.filter(gender = 'Male').count()
+    student_gender_female = Student.objects.filter(gender = 'Female').count()
+    
+    context = {
+         'student_count' : student_count,
+         'staff_count'   : staff_count,
+         'course_count'  : course_count,
+         'subject_count' :subject_count,
+         'student_gender_male' : student_gender_male,
+         'student_gender_female' : student_gender_female
+    }
+    return render(request,'hod/home.html',context)
 
 @login_required(login_url='/')
 def ADD_STUDENT(request):
@@ -364,3 +380,126 @@ def DELETE_SUBJECT(request,id):
      subject.delete()
      messages.success(request,"Subject Deleted Successfully !!")
      return redirect('view_subject')
+
+@login_required(login_url='/')
+def ADD_SESSION(request):
+
+    if request.method == "POST":
+        session_year_start = request.POST.get("session_year_start")
+        session_year_end = request.POST.get("session_year_end")
+
+        session = Session_Year(
+             session_start = session_year_start,
+             session_end = session_year_end
+        )
+
+        session.save()
+        messages.success(request,'Session Added Successfully !!')
+        return redirect('add_session')
+
+    return render(request,'Hod/add_session.html')
+
+@login_required(login_url='/')
+def VIEW_SESSION(request):
+     session = Session_Year.objects.all()
+
+     context  = {
+          'session' : session
+     }
+     return render(request,'Hod/view_session.html',context)
+
+@login_required(login_url='/')
+def EDIT_SESSION(request,id):
+     session = Session_Year.objects.filter(id = id)
+     context = {
+          'session' : session
+     }
+     return render(request,'Hod/edit_session.html',context)
+
+@login_required(login_url='/')
+def UPDATE_SESSION(request):
+     if request.method == "POST":
+        session_id = request.POST.get("session_id")
+        session_year_start = request.POST.get("session_year_start")
+        session_year_end = request.POST.get("session_year_end")
+
+        session = Session_Year(
+             id = session_id,
+             session_start = session_year_start,
+             session_end = session_year_end
+        )
+        session.save()
+        messages.success(request,'Session Updated Successfull !!')
+        return redirect('view_session')
+
+@login_required(login_url='/')   
+def DELETE_SESSION(request,id):
+     session = Session_Year.objects.get(id = id)
+     session.delete()
+     messages.success(request,'Session Deleted Successfull !!')
+     return redirect('view_session')
+
+@login_required(login_url='/')
+def STAFF_SEND_NOTIFICATION(request):
+     staff = Staff.objects.all()
+     see_notification = Staff_Notification.objects.all().order_by("-id")[0:5]
+     context = {
+          'staff':staff,
+          'see_notification':see_notification
+     }
+     return render(request,'Hod/staff_notification.html',context)
+
+@login_required(login_url='/')
+def SAVE_STAFF_NOTIFICATION(request):
+     if request.method == 'POST':
+        staff_id = request.POST.get('staff_id')
+        message = request.POST.get('message')
+
+        staff = Staff.objects.get(admin = staff_id) 
+        notification = Staff_Notification(
+            staff_id = staff,
+            message = message
+        )
+        notification.save()
+        messages.success(request,'Notification Send Successfull !!')
+        return redirect('staff_send_notification')
+
+@login_required(login_url='/')
+def STAFF_LEAVE_VIEW(request):
+     staff_leave = Staff_leave.objects.all()
+     context = {
+          'staff_leave':staff_leave
+     }
+     return render(request,'Hod/staff_leave.html',context)
+
+@login_required(login_url='/')
+def STAFF_APPROVE_LEAVE(request,id):
+     leave = Staff_leave.objects.get(id = id)
+     leave.status = 1
+     leave.save()
+     return redirect('staff_leave_view')
+     
+
+@login_required(login_url='/')
+def STAFF_DISAPPROVE_LEAVE(request,id):
+     leave = Staff_leave.objects.get(id = id)
+     leave.status = 2
+     leave.save()
+     return redirect('staff_leave_view')
+
+def STAFF_FEEDBACK(request):
+     feedback = Staff_Feedback.objects.all()
+     context = {
+          'feedback' : feedback
+     }
+     return render(request,'Hod/staff_feedback.html',context)
+     
+def STAFF_FEEDBACK_SAVE(request):
+     if request.method == "POST":
+          feedback_id = request.POST.get("feedback_id")
+          feedback_reply = request.POST.get('feedback_reply')
+
+          feedback = Staff_Feedback.objects.get(id = feedback_id)
+          feedback.feedback_reply = feedback_reply
+          feedback.save()
+          return redirect('staff_feedback_reply')

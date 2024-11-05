@@ -24,10 +24,10 @@ def doLogin(request):
                 return redirect("hod_home")
                 
             elif user_type == '2':
-                return HttpResponse("This is Staff Panel")
+                return redirect("staff_home")
                 
             elif user_type == '3':
-                return HttpResponse("This is Student Panel")
+                return redirect("student_home")
                 
             else:
                 messages.error(request,'Email and Password are invalid !')
