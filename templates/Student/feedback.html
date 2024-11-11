@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="page-header">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="page-sub-header">
+                <h3 class="page-title">Feedback</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="students.html">Feedback</a></li>
+                    <li class="breadcrumb-item active">All Feedback</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-auto text-end float-end ms-auto download-grp">
+            
+            <button href="#" class="btn btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop" type="button"><i class="fas fa-comment" ></i> Feedback Histroy</button>
+            
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card comman-shadow">
+            <div class="card-body">
+                <form method="post" action="{% url 'student_feedback_save' %}">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-12">
+                            <h5 class="form-title student-info">
+                                Send Feedback
+                                <span>
+                                    <a href="javascript:;"><i class="feather-more-vertical"></i></a>
+                                </span>
+                            </h5>
+                        </div>
+                        {% include "includes/messages.html" %}
+                        
+                        </div>
+                            <div class="col-12">
+                            <div class="form-group local-forms">
+                            <label>Leave Message <span class="login-danger">*</span></label>
+                            <textarea type="text" class="form-control" placeholder="Enter Message" name="feedback" required></textarea>
+                            </div>
+                        </div>
+
+
+                        <div class="col-12">
+                            <div class="student-submit">
+                                <button type="submit" class="btn btn-primary">Send Feedback</button>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+  
+  <!-- Modal -->
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Leave Apply Histroy</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card card-table comman-shadow">
+                    <div class="card-body">
+                        <div class="page-header">
+                            <div class="row align-items-center">
+                                <div class="col">
+                                    <h3 class="page-title">Students</h3>
+                                </div>
+                                
+                            </div>
+                        </div>
+    
+                        <div class="table-responsive">
+                            <table id="table_id" class="table border-0 star-student table-hover table-center mb-0 table-striped">
+                                <thead class="student-thread">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Feedback</th>
+                                        <th>Reply</th>
+                                        
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for i in feedback_histroy %}
+                                    <tr>
+                                        
+                                        <td>{{i.id}}</td>
+                                        
+                                        <td>{{i.feedback}}</td>
+                                        
+                                        {% if i.feedback_reply == ""  %}
+                                        <td>
+                                            <span class="badge badge-danger">No Reply</span>
+                                        </td>
+                                        {% else %}
+                                        <td> {{i.feedback_reply}}</td>
+                                        {% endif %}
+                                    
+                                        
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+
+{% endblock content %}
+
+
+
+

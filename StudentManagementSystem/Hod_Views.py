@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
-from app.models import Course,Session_Year,CustomUser,Student,Staff,Subject,Session_Year,Staff_Notification,Staff_leave,Staff_Feedback
+from app.models import Course,Session_Year,CustomUser,Student,Staff,Subject,Session_Year,Staff_Notification,Staff_leave,Staff_Feedback,Student_Notification,Student_Feedback,Student_leave,Attendance,Attendance_Report
 from django.contrib import messages
 
 @login_required(login_url='/')
@@ -472,13 +472,31 @@ def STAFF_LEAVE_VIEW(request):
      }
      return render(request,'Hod/staff_leave.html',context)
 
+def STUDENT_LEAVE_VIEW(request):
+     student_leave = Student_leave.objects.all()
+     context = {
+          'student_leave':student_leave
+     }
+     return render(request,'Hod/student_leave.html',context)
+
 @login_required(login_url='/')
 def STAFF_APPROVE_LEAVE(request,id):
      leave = Staff_leave.objects.get(id = id)
      leave.status = 1
      leave.save()
      return redirect('staff_leave_view')
-     
+
+def STUDENT_DISAPPROVE_LEAVE(request,id):
+     leave = Student_leave.objects.get(id = id)
+     leave.status = 2
+     leave.save()
+     return redirect('student_leave_view')
+
+def STUDENT_APPROVE_LEAVE(request,id):
+     leave = Student_leave.objects.get(id = id)
+     leave.status = 1
+     leave.save()
+     return redirect('student_leave_view')     
 
 @login_required(login_url='/')
 def STAFF_DISAPPROVE_LEAVE(request,id):
@@ -489,10 +507,34 @@ def STAFF_DISAPPROVE_LEAVE(request,id):
 
 def STAFF_FEEDBACK(request):
      feedback = Staff_Feedback.objects.all()
+     feedback_histroy = Staff_Feedback.objects.all().order_by("-id")[0:5]
      context = {
-          'feedback' : feedback
+          'feedback' : feedback,
+          'feedback_histroy':feedback_histroy
      }
      return render(request,'Hod/staff_feedback.html',context)
+
+def STUDENT_FEEDBACK(request):
+    feedback = Student_Feedback.objects.all()
+    feedback_histroy = Student_Feedback.objects.all().order_by("-id")[0:5]
+    context = {
+          'feedback' : feedback,
+          'feedback_histroy':feedback_histroy
+    }
+
+    return render(request,'Hod/student_feedback.html',context)
+
+def REPLY_STUDENT_FEEDBACK(request):
+     if request.method == 'POST':
+          feedback_id = request.POST.get("feedback_id")
+          feedback_reply = request.POST.get("feedback_reply")
+
+          feedback = Student_Feedback.objects.get(id = feedback_id)
+          feedback.feedback_reply = feedback_reply
+          feedback.status = 1
+          feedback.save()
+          return redirect('get_student_feedback')
+
      
 def STAFF_FEEDBACK_SAVE(request):
      if request.method == "POST":
@@ -501,5 +543,67 @@ def STAFF_FEEDBACK_SAVE(request):
 
           feedback = Staff_Feedback.objects.get(id = feedback_id)
           feedback.feedback_reply = feedback_reply
+          feedback.status = 1
           feedback.save()
           return redirect('staff_feedback_reply')
+
+def STUDENT_SEND_NOTIFICATION(request):
+     student = Student.objects.all()
+     notification = Student_Notification.objects.all()
+     context = {
+          'student':student,
+          'notification':notification
+     }
+     return render(request,'Hod/student_notification.html',context)
+
+def SAVE_STUDENT_NOTIFICATION(request):
+     if request.method == 'POST':
+          student_id = request.POST.get("student_id")
+          message = request.POST.get("message")
+
+          student = Student.objects.get(admin = student_id)
+          student_notification = Student_Notification(
+               student_id = student,
+               message = message
+          )
+
+          student_notification.save()
+          messages.success(request,"Student Notification Sent Successfully !!")
+          return redirect('student_send_notification')
+     
+def VIEW_ATTENDANCE(request):
+    subject = Subject.objects.all()
+    session_year = Session_Year.objects.all()
+    action = request.GET.get('action')
+
+    get_subject = None
+    get_session_year = None
+    attendance_date = None
+    attendance_report = None
+    if action is not None:
+        if request.method == 'POST':
+            subject_id = request.POST.get('subject_id')
+            session_year_id = request.POST.get('session_year_id')
+            attendance_date = request.POST.get('attendance_date')
+
+            get_subject = Subject.objects.get(id = subject_id)
+            get_session_year = Session_Year.objects.get(id = session_year_id)
+            attendance = Attendance.objects.filter(subject_id = get_subject,attendance_data = attendance_date)
+
+            for i in attendance:
+                attendance_id = i.id
+                attendance_report = Attendance_Report.objects.filter(attendance_id = attendance_id)
+
+    context = {
+        'session_year' :session_year,
+        'subject':subject,
+        'action':action,
+        'get_subject':get_subject,
+        'get_session_year':get_session_year,
+        'attendance_date':attendance_date,
+        'attendance_report':attendance_report
+    }
+    return render(request,'Hod/view_attendance.html',context)
+
+     
+     

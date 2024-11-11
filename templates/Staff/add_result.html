@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <div class="content container-fluid">
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title">Add Result</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="subjects.html">Result</a></li>
+                        <li class="breadcrumb-item active">Add Result</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {% include "includes/messages.html" %}
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        {% if action is None %}
+                        <form action="?action=Show-Students" method="post">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-12">
+                                    <h5 class="form-title"><span>Result Information</span></h5>
+                                </div>
+                               
+                                <div class="col-12 col-sm-4">
+                                    <div class="form-group local-forms">
+                                        <label>Subject <span class="login-danger">*</span></label>
+                                        <select class="form-control select" name="subject_id" required>
+                                            <option>Select Subject </option>
+                                            {% for i in subjects  %}
+                                            <option value="{{i.id}}">{{i.name}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-4">
+                                    <div class="form-group local-forms">
+                                        <label>Session Year <span class="login-danger">*</span></label>
+                                        <select class="form-control select" name="session_year_id" required>
+                                            <option>Select Session Year </option>
+                                            {% for i in session_year  %}
+                                            <option value="{{i.id}}">{{i.session_start}} To {{i.session_end}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="student-submit">
+                                        <button type="submit" class="btn btn-primary">Fetch Student</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        {% else %}
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <form action="{% url 'staff_save_result' %}" method="post">
+                                            {% csrf_token %}
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <h5 class="form-title"><span>Result Information</span></h5>
+                                                </div>
+                                               
+                                                <div class="col-12 col-sm-4">
+                                                    <div class="form-group local-forms">
+                                                        <label>Subject <span class="login-danger">*</span></label>
+                                                        <select class="form-control select" name="subject_id" required>
+                                                            <option value="{{get_subject.id}}">{{get_subject}}</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-sm-4">
+                                                    <div class="form-group local-forms">
+                                                        <label>Session Year <span class="login-danger">*</span></label>
+                                                        <select class="form-control select" name="session_year_id" required>
+                                                            <option value="{{get_session_year.id}}">{{get_session_year}}</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-sm-4">
+                                                    <div class="form-group local-forms">
+                                                        <label>Student List <span class="login-danger">*</span></label>
+                                                        <select class="form-control select" name="student_id" required>
+                                                            <option>Select Student </option>
+                                                            {% for i in students  %}
+                                                            <option value="{{i.admin.id}}"> ID{{i.id}}  : {{i.admin.first_name}} {{i.admin.last_name}}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-sm-4">
+                                                    <div class="form-group local-forms">
+                                                        <label>Assignment Marks <span class="login-danger">*</span></label>
+                                                        <input class="form-control" type="number" placeholder="Enter Assignment Marks" name="assignment_mark" required/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 col-sm-4">
+                                                    <div class="form-group local-forms">
+                                                        <label>Exam Marks <span class="login-danger">*</span></label>
+                                                        <input class="form-control" type="number" placeholder="Enter Exam Marks" name="exam_mark" required/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="student-submit">
+                                                        <button type="submit" class="btn btn-primary">Add Result</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}
+
+
+

@@ -8,10 +8,10 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="page-sub-header">
-                    <h3 class="page-title">Staff Feedback</h3>
+                    <h3 class="page-title">Student Notification</h3>
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="students.html">Staff Feedback</a></li>
-                        <li class="breadcrumb-item active">Staff Feedback</li>
+                        <li class="breadcrumb-item"><a href="students.html">Student Notification</a></li>
+                        <li class="breadcrumb-item active">All Student Notification</li>
                     </ul>
                 </div>
             </div>
@@ -55,7 +55,7 @@
                                 <a href="students.html" class="btn btn-outline-gray me-2 active"><i class="feather-list"></i></a>
                                 <a href="students-grid.html" class="btn btn-outline-gray me-2"><i class="feather-grid"></i></a>
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                    View All Staff Feedback
+                                    View All Notification
                                   </button>
                             </div>
                         </div>
@@ -71,14 +71,13 @@
                                         </div>
                                     </th>
                                     <th>ID</th>
-                                    <th>Staff Name</th>
-                                    <th>Feedback</th>
-                                    <th>Date</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
                                     <th class="text-end">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for i in feedback %}
+                                {% for i in student %}
                                 <tr>
                                     <td>
                                         <div class="form-check check-tables">
@@ -88,15 +87,14 @@
                                     <td>{{i.id}}</td>
                                     <td>
                                         <h2 class="table-avatar">
-                                            <a href="student-details.html" class="avatar avatar-sm me-2"><img class="avatar-img rounded-circle" src="/{{i.staff_id.admin.profile_pic}}" alt="User Image" /></a>
-                                            <a href="student-details.html">{{i.staff_id.admin.first_name}} {{i.staff_id.admin.last_name}}</a>
+                                            <a href="student-details.html" class="avatar avatar-sm me-2"><img class="avatar-img rounded-circle" src="/{{i.admin.profile_pic}}" alt="User Image" /></a>
+                                            <a href="student-details.html">{{i.admin.first_name}} {{i.admin.last_name}}</a>
                                         </h2>
                                     </td>
-                                    <td>{{i.feedback}}</td>
-                                    <td>{{i.created_at}}</td>
+                                    <td>{{i.admin.email}}</td>
                                     <td class="text-end">
                                         <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#send_notification_modal-{{forloop.counter}}">
-                                            Reply
+                                            Send Student Notification
                                           </button>
                                     </td>
                                 </tr>
@@ -133,18 +131,18 @@
                                     <thead class="student-thread">
                                         <tr>
                                             
-                                            <th style="width:60%">Feedback</th>
-                                            <th style="width:30%" class="text-end">Reply</th>
+                                            <th style="width:60%">Message</th>
+                                            <th style="width:30%" class="text-end">Status</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {% for i in feedback_histroy %}
+                                        {% for i in notification %}
                                         <tr>
-                                            <td>{{i.feedback_reply}}</td>
+                                            <td>{{i.message}}</td>
                                             {% if i.status == 0 %}
-                                            <td><span class="badge bg-danger">No Reply</span> </td>
+                                            <td><span class="badge bg-danger">UnRead the Message</span> </td>
                                             {% else %}
-                                            <td>{{i.feedback_reply}}</td>
+                                            <td><span class="badge bg-success">Read the Message</span> </td>
                                             {% endif %}
                                         </tr>
                                         {% endfor %}
@@ -161,22 +159,22 @@
     </div>
   </div>
 
-  {% for i in feedback %}
+  {% for i in notification %}
   <div class="modal fade" id="send_notification_modal-{{forloop.counter}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="send_notification_modal">Reply To {{i.staff_id.admin.first_name}} {{i.staff_id.admin.last_name}}</h5>
+          <h5 class="modal-title" id="send_notification_modal">Send Student Notification To {{i.admin.first_name}} {{i.admin.last_name}}</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            <form method="post" action="{% url 'staff_feedback_reply_save' %}">
+            <form method="post" action="{% url 'save_student_notification' %}">
                 {% csrf_token %}
                 <div class="mb-3">
-                  <input type="text" class="form-control" name="feedback_id" value={{i.id}} hidden>
-                  <textarea row="4" class="form-control" name="feedback_reply"></textarea>
+                  <input type="text" class="form-control" name="message">
+                  <input type="text" class="form-control" name="student_id" value="{{i.admin.id}}" hidden>
                 </div>
-                <button type="submit" class="btn btn-primary">Send Reply</button>
+                <button type="submit" class="btn btn-primary">Send Notification</button>
             </form>
         </div>
         <div class="modal-footer">

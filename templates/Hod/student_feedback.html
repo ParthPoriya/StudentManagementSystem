@@ -55,7 +55,7 @@
                                 <a href="students.html" class="btn btn-outline-gray me-2 active"><i class="feather-list"></i></a>
                                 <a href="students-grid.html" class="btn btn-outline-gray me-2"><i class="feather-grid"></i></a>
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                    View All Staff Feedback
+                                    View All Student Feedback
                                   </button>
                             </div>
                         </div>
@@ -88,8 +88,8 @@
                                     <td>{{i.id}}</td>
                                     <td>
                                         <h2 class="table-avatar">
-                                            <a href="student-details.html" class="avatar avatar-sm me-2"><img class="avatar-img rounded-circle" src="/{{i.staff_id.admin.profile_pic}}" alt="User Image" /></a>
-                                            <a href="student-details.html">{{i.staff_id.admin.first_name}} {{i.staff_id.admin.last_name}}</a>
+                                            <a href="student-details.html" class="avatar avatar-sm me-2"><img class="avatar-img rounded-circle" src="/{{i.student_id.admin.profile_pic}}" alt="User Image" /></a>
+                                            <a href="student-details.html">{{i.student_id.admin.first_name}} {{i.student_id.admin.last_name}}</a>
                                         </h2>
                                     </td>
                                     <td>{{i.feedback}}</td>
@@ -140,7 +140,7 @@
                                     <tbody>
                                         {% for i in feedback_histroy %}
                                         <tr>
-                                            <td>{{i.feedback_reply}}</td>
+                                            <td>{{i.feedback}}</td>
                                             {% if i.status == 0 %}
                                             <td><span class="badge bg-danger">No Reply</span> </td>
                                             {% else %}
@@ -166,11 +166,11 @@
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="send_notification_modal">Reply To {{i.staff_id.admin.first_name}} {{i.staff_id.admin.last_name}}</h5>
+          <h5 class="modal-title" id="send_notification_modal">Reply To {{i.student_id.admin.first_name}} {{i.student_id.admin.last_name}}</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            <form method="post" action="{% url 'staff_feedback_reply_save' %}">
+            <form method="post" action="{% url 'reply_student_feedback' %}">
                 {% csrf_token %}
                 <div class="mb-3">
                   <input type="text" class="form-control" name="feedback_id" value={{i.id}} hidden>

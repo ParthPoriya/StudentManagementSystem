@@ -17,5 +17,11 @@ admin.site.register(Subject)
 admin.site.register(Staff_Notification)
 admin.site.register(Staff_leave)
 admin.site.register(Staff_Feedback)
+admin.site.register(Student_Notification)
+admin.site.register(Student_Feedback)
+admin.site.register(Student_leave)
+admin.site.register(Attendance)
+admin.site.register(Attendance_Report)
+admin.site.register(StudentResult)
 
 # Register your models here.
